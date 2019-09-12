@@ -13,3 +13,6 @@ project/boot/
 project/plugins/project/
 
 .metals*
+
+.ivy2
+.sbt
