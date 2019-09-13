@@ -16,3 +16,4 @@ project/plugins/project/
 
 .ivy2
 .sbt
+.bash_history
