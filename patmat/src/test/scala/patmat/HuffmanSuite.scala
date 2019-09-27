@@ -28,6 +28,10 @@ class HuffmanSuite extends FunSuite {
     }
   }
 
+	test("times of list") {
+		assert(times(List('a', 'b', 'a')) === List(('a', 2), ('b', 1)))
+	}
+
 
   test("string2chars(\"hello, world\")") {
     assert(string2Chars("hello, world") === List('h', 'e', 'l', 'l', 'o', ',', ' ', 'w', 'o', 'r', 'l', 'd'))
@@ -43,6 +47,18 @@ class HuffmanSuite extends FunSuite {
     val leaflist = List(Leaf('e', 1), Leaf('t', 2), Leaf('x', 4))
     assert(combine(leaflist) === List(Fork(Leaf('e',1),Leaf('t',2),List('e', 't'),3), Leaf('x',4)))
   }
+
+	test("encode test") {
+		new TestTrees {
+      assert(encode(t1)("ab".toList) === List(0, 1))
+    }
+	}
+
+	test("decode test") {
+		new TestTrees {
+      assert(decode(t1, List(0, 1)) === "ab".toList)
+    }
+	}
 
 
   test("decode and encode a very short text should be identity") {
