@@ -108,8 +108,8 @@ object Huffman {
    * Checks whether the list `trees` contains only one single code tree.
    */
     def singleton(trees: List[CodeTree]): Boolean = trees match{
-      case h :: t => false
-      case Nil => true
+      case h :: Nil => true
+      case _ => false
     }
 
   /**
@@ -176,12 +176,15 @@ object Huffman {
     def decodeHelper(root: CodeTree, tree: CodeTree, bits: List[Bit]): List[Char] = bits match {
       case h :: t => tree match {
         case f: Fork => h match {
-          case 1 => decodeHelper(root, f.right, bits)
-          case 0 => decodeHelper(root, f.left, bits)
+          case 1 => decodeHelper(root, f.right, t)
+          case 0 => decodeHelper(root, f.left, t)
         }
-        case l: Leaf => l.char :: decodeHelper(root, root, t)
+        case l: Leaf => l.char :: decodeHelper(root, root, bits)
       }
-      case Nil => Nil
+      case Nil => tree match {
+        case f: Fork => Nil
+        case l: Leaf => l.char :: Nil
+      }
     }
 
   /**
@@ -253,7 +256,19 @@ object Huffman {
    * use it in the `convert` method above, this merge method might also do some transformations
    * on the two parameter code tables.
    */
-    def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = a ::: b
+    def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = a match {
+      case h :: t => mergeCodeTables(t, mergeToTable(h, b))
+      case Nil => b
+    }
+
+    def mergeToTable(h1: (Char, List[Bit]), b: CodeTable): CodeTable = h1 :: b
+    //   b match {
+    //   case h2 :: t => (h1._1 == h2._1) match {
+    //     case true => (h1._1, h1._2+h2._2) :: t
+    //     case false => h2 :: mergeToTable(h, t)
+    //   }
+    //   case Nil => List(h)
+    // }
 
   /**
    * This function encodes `text` according to the code tree `tree`.

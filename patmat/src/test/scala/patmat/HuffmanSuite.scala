@@ -14,13 +14,11 @@ class HuffmanSuite extends FunSuite {
 		val t2 = Fork(Fork(Leaf('a',2), Leaf('b',3), List('a','b'), 5), Leaf('d',4), List('a','b','d'), 9)
 	}
 
-
   test("weight of a larger tree") {
     new TestTrees {
       assert(weight(t1) === 5)
     }
   }
-
 
   test("chars of a larger tree") {
     new TestTrees {
@@ -59,7 +57,6 @@ class HuffmanSuite extends FunSuite {
       assert(decode(t1, List(0, 1)) === "ab".toList)
     }
 	}
-
 
   test("decode and encode a very short text should be identity") {
     new TestTrees {
